@@ -1,10 +1,10 @@
 function SL2P(varargin)
 
 %% 1. Initialization
-if ~ismember(nargin,[2,3]), disp({'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!';'--usage : Matlab SL2P_v_01 [input_path\] [S2 tiff data folder] [output_path\ (optional)]'});return; end;
+if ~ismember(nargin,[2,3]), disp({'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!';'--usage : Matlab SL2P_V2 [input_path\] [S2 tiff data folder] [output_path\ (optional)]'});return; end;
 
-addpath(genpath('.\SL2P_V1-master\tools'));
-addpath(genpath('.\SL2P_V1-master\tools\aux_data'));
+addpath(genpath('.\SL2P_V2-master\tools'));
+addpath(genpath('.\SL2P_V2-master\tools\aux_data'));
 
 bio_vars={'LAI','FCOVER','FAPAR','LAI_Cab','LAI_Cw'};
 BIO_VAR_bounding_box=importdata('G:\Najib\6_SL2P_regularizing\SL2P_V1-master\tools\aux_data\BIO_VAR_bounding_box.mat');
@@ -44,14 +44,17 @@ Input_NNT(:,end-2:end)=cos(deg2rad(Input_NNT(:,end-2:end)));
 NNT_IN=Input_NNT(:,3:end)';
 waitbar(3/3)
 close(h)
+
 %% 2.4 Computing input_flags 
 input_out_of_range=input_out_of_range_flag_function_SL2P(Input_NNT(:,3:end-3),r,c);% the database is hard coded in the function
 %% 2.5 Creating no_bare_soil_or_vegetated_area flag
+
 %% 3. Loading NET
 disp({'--Loading NNET--------------------------------------'});
 NET_estim=importdata('aux_data\SL2P_NETs.mat');
 NET_uncer=importdata('aux_data\SL2P_uncert_NETs.mat');
-%% 5. Simulating biophysical parameters (SL2P).....................................
+
+%% 4. Simulating biophysical parameters (SL2P).....................................
 disp({'--Simulating vegetation biophysical variables ------'});
 h = waitbar(0,'Simulating bio- variables...');
 for ivar=1:length(bio_vars),
